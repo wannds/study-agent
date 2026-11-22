@@ -1,0 +1,21 @@
+.plans-page{max-width:1480px;width:100%;margin:0 auto}
+.plan-create{display:flex;align-items:center;gap:24px;margin-bottom:24px}
+.plan-create>div{flex:1;min-width:0}.plan-create .feature-field{margin-bottom:8px}.plan-create .feature-hint{margin-bottom:0}
+.plan-layout{display:grid;grid-template-columns:225px minmax(0,1fr);gap:22px;align-items:start}
+.plan-list{padding:10px}.plan-list button{display:flex;flex-direction:column;gap:8px;text-align:left;width:100%;padding:15px;border-radius:8px;color:inherit;overflow-wrap:anywhere}
+.plan-list button.selected{background:#f2eff8;color:#7350b2}.plan-list button small{font-size:11px;color:#82758e}.plan-list button span{font-size:13px;line-height:1.6}
+.plan-content{display:flex;flex-direction:column;gap:20px;min-width:0}.plan-title{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.plan-title h2{font-size:17px;margin:0;font-weight:600;overflow-wrap:anywhere}
+.plan-status{display:flex;align-items:center;gap:8px;font-size:13px;line-height:1.8;color:#726184}
+.plan-prose{white-space:pre-wrap;line-height:1.95;font-size:14px;overflow-wrap:anywhere;max-width:78ch}
+.plan-warning{border-left:3px solid #cba35e;padding-left:12px;font-size:12px;line-height:1.8;color:#8c6c37}
+.plan-confirm h2{margin-bottom:12px}.plan-confirm .feature-fields{margin-top:20px}
+.plan-task{padding:18px 0;border-bottom:1px solid #e8e2ee}.plan-task:last-child{border-bottom:0;padding-bottom:0}.plan-task strong{font-size:14px;font-weight:500;line-height:1.8}
+.plan-task p,.plan-task span{font-size:12px;line-height:1.8;margin:6px 0;color:#82758e}.plan-task.done strong{color:#56846b}.plan-task .account-actions{margin-top:10px}
+.plan-units{margin-top:18px}.plan-units>details{border-top:1px solid #e8e2ee;padding:17px 0}.plan-units summary{display:flex;justify-content:space-between;align-items:baseline;gap:14px;cursor:pointer;font-size:14px;line-height:1.8}.plan-units summary small{font-size:11px;white-space:nowrap;color:#82758e}
+.plan-units summary:before{content:'›';color:#8c8098}.plan-units details[open]>summary:before{content:'⌄'}.plan-units summary span{flex:1}.plan-units h3{font-size:13px;margin:18px 0 8px;font-weight:600}
+.plan-units p,.plan-units li{font-size:13px;line-height:1.9}.plan-units ul{padding-left:20px}.plan-sources{display:flex;flex-direction:column;align-items:flex-start;gap:8px}.plan-sources .button{text-align:left;white-space:normal;line-height:1.8}
+.plan-auto{border-top:1px solid #e8e2ee;padding-top:20px;margin:20px 0}.plan-auto .checkbox-label{font-size:13px;line-height:1.8}.plan-auto .feature-field{max-width:320px}
+.plans-page>.form-error{margin-bottom:20px}.video-task-actions{flex-wrap:wrap;justify-content:flex-end}
+@media(max-width:1050px){.plan-layout{grid-template-columns:1fr}.plan-list{display:flex;overflow-x:auto;gap:8px}.plan-list button{min-width:180px;width:220px;flex-shrink:0}.plan-create{align-items:flex-start;flex-direction:column}.plan-create>div{width:100%}}
+@media(max-width:780px){.plan-title{align-items:flex-start}.plan-units summary{flex-wrap:wrap}.plan-content .feature-panel{padding:18px}.plan-create{padding:18px}.plans-page .page-heading{flex-wrap:wrap;gap:12px}}

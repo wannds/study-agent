@@ -1,0 +1,78 @@
+[workspace]
+resolver = "3"
+members = ["crates/*"]
+# A plain `cargo build` or `cargo test` covers the engine and the CLI, which build on
+# machines without the desktop's native libraries. `--workspace` adds the desktop.
+default-members = ["crates/*"]
+
+[workspace.package]
+version = "3.0.0-alpha.9"
+edition = "2024"
+license = "MIT"
+
+[workspace.dependencies]
+ratex-layout = "0.1.15"
+ratex-parser = "0.1.15"
+ratex-svg = { version = "0.1.15", features = ["embed-fonts"] }
+ratex-types = "0.1.15"
+qrcode = { version = "0.14.1", default-features = false }
+anyhow = "1"
+tempfile = "3"
+url = "2"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "process", "fs", "io-util", "sync", "time"] }
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.11"
+zip = { version = "9", default-features = false }
+image = { version = "0.25", default-features = false, features = ["jpeg", "png"] }
+ureq = { version = "3", features = ["json"] }
+base64 = "0.23"
+getrandom = "0.4"
+strum = { version = "0.27", features = ["derive"] }
+thiserror = "2"
+open = "5"
+toml = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+indicatif = "0.18"
+hound = "3.5"
+indexmap = { version = "2", features = ["serde"] }
+libc = "0.2"
+dialoguer = "0.12.0"
+walkdir = "2"
+whatlang = "0.18"
+which = "8.0.6"
+sys-locale = "0.3"
+# The desktop: Kit, Base and gpui-kit-material from crates.io. Members add the features
+# they use. The root's [patch] applies Material's optional engine patches to these.
+gpui-kit = { version = "0.9.1", features = ["gpui-fast"] }
+gpui-base = "0.9.1"
+gpui-kit-material = { git = "https://github.com/mizorewww/gpui-kit-material", rev = "1ab6e5480b1eb8a15ee5120ca16ef6261ac9dab2", default-features = false, features = ["serde", "gpui-fast"] }
+gpui-kit-material-color = { git = "https://github.com/mizorewww/gpui-kit-material", rev = "1ab6e5480b1eb8a15ee5120ca16ef6261ac9dab2", features = ["serde"] }
+# The release gpui-kit-material depends on.
+gpui-material-symbols = { version = "0.1", default-features = false }
+smol = "2"
+chrono = "0.4"
+uuid = "1"
+same-file = "1.0.6"
+zeroize = "1"
+pulldown-cmark = "0.13"
+unicode-segmentation = "1"
+trash = "5"
+keyring = "4"
+security-framework = "3.7"
+embed-resource = "3.0"
+mirror-fetch = { version = "0.1", features = ["ip-lookup"] }
+slide-detect = "0.1"
+subtitle-parse = { version = "0.1", features = ["serde"] }
+
+[profile.dev]
+debug = "line-tables-only"
+
+
+
+[profile.release]
+lto = "thin"
+strip = true
+
