@@ -8,6 +8,16 @@ export default function InkCanvas({ sheet, onChange, disabled = false, label }: 
   const canvas = useRef<HTMLCanvasElement>(null);
   const active = useRef<{ id: number; stroke: Stroke } | null>(null);
   const [tool, setTool] = useState<'pen' | 'eraser'>('pen');
+  const [fingerWriting, setFingerWriting] = useState(() => {
+    try { return localStorage.getItem('study-finger-writing') !== 'off'; }
+    catch { return true; }
+  });
+  function toggleFingerWriting() {
+    const next = !fingerWriting;
+    setFingerWriting(next);
+    try { localStorage.setItem('study-finger-writing', next ? 'on' : 'off'); }
+    catch { /* The choice still applies to this canvas. */ }
+  }
   const cursorRing = useRef<HTMLSpanElement>(null);
   const [eraserEnd, setEraserEnd] = useState(false);
   const [preferences, setPreferences] = useState(() => inkPreferences(label));
@@ -50,6 +60,7 @@ export default function InkCanvas({ sheet, onChange, disabled = false, label }: 
     <div className="ink-tools" role="toolbar" aria-label={`${label}工具`}>
       <button disabled={disabled} aria-pressed={tool === 'pen'} onClick={() => setTool('pen')}><PenLine size={16} />笔</button>
       <button disabled={disabled} aria-pressed={tool === 'eraser'} onClick={() => setTool('eraser')}><Eraser size={16} />橡皮</button>
+      <button disabled={disabled} aria-pressed={fingerWriting} onClick={toggleFingerWriting}>手指书写</button>
       <button disabled={disabled || !sheet.strokes.length} onClick={() => { setRedo([...redo, sheet.strokes.at(-1)!]); onChange({ strokes: sheet.strokes.slice(0, -1) }); }}><RotateCcw size={16} />撤销</button>
       <button disabled={disabled || !redo.length} onClick={() => { onChange({ strokes: [...sheet.strokes, redo.at(-1)!] }); setRedo(redo.slice(0, -1)); }}><RotateCw size={16} />重做</button>
       <button disabled={disabled || !sheet.strokes.length} onClick={() => { if (window.confirm(`清空${label}？此操作无法撤销。`)) { onChange({ strokes: [] }); setRedo([]); } }}><Trash2 size={16} />清空</button>
@@ -69,7 +80,7 @@ export default function InkCanvas({ sheet, onChange, disabled = false, label }: 
       onPointerLeave={() => { if (cursorRing.current) cursorRing.current.style.display = 'none'; }}
       onContextMenu={e => e.preventDefault()}
       onPointerDown={e => {
-        if (disabled || active.current || e.pointerType === 'touch' || (e.button !== 0 && e.button !== 5)) return;
+        if (disabled || active.current || (e.pointerType === 'touch' && (!fingerWriting || !e.isPrimary)) || (e.button !== 0 && e.button !== 5)) return;
         if (sheet.strokes.length >= 1900 || sheet.strokes.reduce((n, s) => n + s.points.length, 0) > 28000) { setLimit('这一页的笔迹已较多，请新增一页继续书写。'); return; }
         setLimit(''); e.preventDefault(); e.currentTarget.setPointerCapture(e.pointerId);
         const usedTool = e.button === 5 ? 'eraser' : tool; setEraserEnd(e.button === 5); showCursor(e, usedTool);
@@ -91,6 +102,6 @@ export default function InkCanvas({ sheet, onChange, disabled = false, label }: 
       <span ref={cursorRing} className="ink-eraser-cursor" aria-hidden="true" style={{ width: `${preferences.eraserWidth / 1200 * 100}%` }} />
       {!sheet.strokes.length && <span className="ink-placeholder">{label === '草稿纸' ? '在这里演算，不参与批改' : label === '手写笔记' ? '写下笔记、公式与示意图，落笔后自动保存' : '用触控笔或鼠标写下答案与过程'}</span>}
     </div>
-    <p className="ink-hint">{limit || '支持触控笔和鼠标；手指与手掌不落笔。展开后书写更方便。'}</p>
+    <p className="ink-hint">{limit || (fingerWriting ? '可用一根手指、触控笔或鼠标书写。用笔时可关闭「手指书写」以防手掌误触。' : '触控笔和鼠标可书写。点「手指书写」可启用触屏输入。')}</p>
   </div>;
 }
